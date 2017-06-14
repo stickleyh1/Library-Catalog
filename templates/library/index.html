@@ -1,0 +1,18 @@
+{% extends 'library/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<h1>Library Home</h1>
+
+  <p>Welcome to the library</p>
+
+<h2>Current Inventory</h2>
+
+  <p>The library has the following record counts:</p>
+  <ul>
+    <li><strong>Media:</strong> {{ num_media }}</li>
+    <li><strong>Copies:</strong> {{ num_inst }}</li>
+    <li><strong>Copies available:</strong> {{ num_avail }}</li>
+  </ul>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'library/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <h1>Media List</h1>
+
+    {% if media_list %}
+    <ul>
+
+      {% for media in media_list %}
+      <li>
+        <a href="{{ media.get_absolute_url }}">{{ media.title }}</a> ({{media.topic}})
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no books in the library.</p>
+    {% endif %}       
+{% endblock %}
