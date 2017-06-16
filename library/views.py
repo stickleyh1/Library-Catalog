@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.views import generic
-from library.models import Media, UserProfile, MediaInstance, Genre
+from library.models import Media, User, MediaInstance, Genre
 
 def index(request):
 	context_dict={}

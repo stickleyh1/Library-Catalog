@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import UserProfile, Genre, Media, MediaInstance
+from .models import Genre, Media, MediaInstance
 
-admin.site.register(UserProfile)
 admin.site.register(Genre)
 
 @admin.register(MediaInstance)

@@ -1,14 +1,8 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+import datetime as dt
 import uuid
-
-
-class UserProfile(models.Model):
-	user = models.OneToOneField(User)
-
-	def __str__(self):
-		return self.user.username
 
 class Genre(models.Model):
 	name = models.CharField(max_length=200, help_text="Enter a media topic")
@@ -16,8 +10,8 @@ class Genre(models.Model):
 		return self.name
 
 class Media(models.Model):
-	mediaType = models.CharField('Type',max_length=200, help_text="The type of the media", default="Book")
-	title = models.CharField(max_length=200)
+	mediaType = models.CharField(max_length=200, help_text="The type of the media", default="Book")
+	title = models.CharField(max_length=200, help_text="The title of the media", default="Unlisted")
 	isbn = models.CharField('ISBN', max_length=13, help_text="13 character ISBN number", blank=True)
 	topic = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, related_name="Topic")
 	subtopics = models.ManyToManyField(Genre, help_text="Select the subtopics for this book")
@@ -30,11 +24,11 @@ class Media(models.Model):
 		return reverse('media-detail', args=[str(self.id)])
 
 class MediaInstance(models.Model):
-	id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this media")
+	id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this instance")
 	media = models.ForeignKey('Media', on_delete=models.SET_NULL, null=True)
-	due_date = models.DateField(null=True, blank=True)
-	rental_history = models.ManyToManyField(UserProfile, help_text="Select the past renters")
-	borrower = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name="Borrower")
+	due_date = models.DateField(null=True, blank=True, default=(dt.date.today() + dt.timedelta(days=7)))
+	rental_history = models.ManyToManyField(User, help_text="Select the past renters", blank=True, related_name="History")
+	borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="Borrower")
 
 
 	AVAILABILITY = (
