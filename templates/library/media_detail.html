@@ -4,18 +4,54 @@
 {% block content %}
   <h1>Title: {{ media.title }}</h1>
 
-  <p><strong>ISBN:</strong> {{ media.isbn }}</p>  
-  <p><strong>Topic:</strong>{{ media.topic }}</p> 
-  <p><strong>SubTopics:</strong> {% for subtopics in media.subtopics.all %} {{ subtopics }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  
-
-  <div style="margin-left:20px;margin-top:20px">
-    <h4>Copies</h4>
+  <p>
+    {% if copy.image != null %}
+      <strong>Cover:</strong> <img src="{{ MEDIA_URL }}{{media.title}}.jpg" alt="Cover Photo">
+    {% endif %}
+  </p>
+  <p>
+    <strong>ISBN:</strong> {{ media.isbn }}
+  </p>  
+  <p>
+    <strong>Topic:</strong> {{ media.topic }}
+  </p> 
+  <p>
+    <strong>SubTopics:</strong> 
+      {% for subtopics in media.subtopics.all %} 
+        {{ subtopics }}
+        {% if not forloop.last %}, {% endif %}
+      {% endfor %}
+  </p>  
+  <br/>
+  <hr>
+  <h4>Copies</h4>
+  <div style="margin-left: 25px">
 
     {% for copy in media.mediainstance_set.all %}
-    <hr>
-    <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'd' %}text-danger{% else %}text-warning{% endif %}">{{ copy.get_status_display }}</p>
-    {% if copy.status != 'a' %}<p><strong>Due to be returned:</strong> {{copy.due_back}}</p>{% endif %}
-    <p class="text-muted"><strong>Id:</strong> {{copy.id}}</p>
+      <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'd' %}text-danger{% else %}text-warning{% endif %}">
+        {{ copy.get_status_display }}
+      </p>
+      {% if copy.status != 'a' %}
+        <p>
+          <strong>Due to be returned:</strong> {{ copy.due_date}}
+        </p>
+        <p>
+          <strong>Current Borrower:</strong> {{ copy.borrower}}
+        </p>
+      {% endif %}
+      <p class="text-muted">
+        <strong>Id:</strong> {{copy.id}}
+      </p>
+      <h4>Rental History</h4>
+      <div style="margin-left: 25px">
+          {% for renter in copy.rental_history.all %}
+            <p>
+              {{ renter }}
+            </p>
+            {% endfor %}
+      </div>
+      <hr>
     {% endfor %}
   </div>
+  
 {% endblock %}

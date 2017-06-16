@@ -10,7 +10,7 @@ class Genre(models.Model):
 		return self.name
 
 class Media(models.Model):
-	mediaType = models.CharField(max_length=200, help_text="The type of the media", default="Book")
+	mediaType = models.CharField("type", max_length=200, help_text="The type of the media", default="Book")
 	title = models.CharField(max_length=200, help_text="The title of the media", default="Unlisted")
 	isbn = models.CharField('ISBN', max_length=13, help_text="13 character ISBN number", blank=True)
 	topic = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, related_name="Topic")

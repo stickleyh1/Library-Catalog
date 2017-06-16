@@ -5,7 +5,7 @@ admin.site.register(Genre)
 
 @admin.register(MediaInstance)
 class MediaInstanceAdmin(admin.ModelAdmin):
-    list_filter = ('status', 'due_date')
+    list_display = ('media','id','status')
 
     fieldsets = (
     	(None, {
@@ -16,10 +16,6 @@ class MediaInstanceAdmin(admin.ModelAdmin):
     	})
     )
 
-class MediaInstanceInline(admin.TabularInline):
-	model = MediaInstance
-
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
-    list_display = ('title', 'isbn')
-    inlines = [MediaInstanceInline]
+    list_display = ('title', 'mediaType', 'topic', 'isbn')
