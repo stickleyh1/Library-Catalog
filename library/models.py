@@ -26,9 +26,10 @@ class Media(models.Model):
 class MediaInstance(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this instance")
 	media = models.ForeignKey('Media', on_delete=models.SET_NULL, null=True)
-	due_date = models.DateField(null=True, blank=True, default=(dt.date.today() + dt.timedelta(days=7)))
+	due_date = models.DateField(null=True, blank=True, default=None)
 	rental_history = models.ManyToManyField(User, help_text="Select the past renters", blank=True, related_name="History")
 	borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="Borrower")
+	late_fee = models.IntegerField(default=0)
 
 
 	AVAILABILITY = (

@@ -28,7 +28,8 @@ def populate():
 		"Mystery",
 		"Adventure",
 		"Romance",
-		"Science Fiction"
+		"Science Fiction",
+		"Sports"
 	]
 
 	instances = [
@@ -37,7 +38,17 @@ def populate():
 		"due_date": (dt.date.today() + dt.timedelta(days=1)),
 		"history": [0, 1],
 		"borrower": 1,
-		"status": "o"}
+		"status": "o"},
+		{"id": uuid.uuid4(),
+		"media": 0,
+		"due_date": (dt.date.today() + dt.timedelta(days=7)),
+		"history": [1,0],
+		"borrower": 0,
+		"status": "o"},
+		{"id": uuid.uuid4(),
+		"media": 1,
+		"history": [0],
+		"status": "a"}
 	]
 
 	medias = [
@@ -46,7 +57,13 @@ def populate():
 		"isbn": "1234567891234",
 		"topic": 0,
 		"subtopics": [2, 3, 4],
-		"instances": [instances[0]]}
+		"instances": [instances[0], instances[1]]},
+		{"type": "DVD",
+		"title": "Mighty Ducks",
+		"isbn": "1534267896204",
+		"topic": 0,
+		"subtopics": [2, 7],
+		"instances": [instances[2]]}
 	]
 
 	genre_objs = []
@@ -112,8 +129,9 @@ def add_instance(m, data, users):
 	else:
 		i = MediaInstance.objects.get_or_create(id= data["id"])[0]
 		i.media = m
-		i.due_date = data["due_date"]
-		i.borrower = users[data["borrower"]]
+		if 'borrower' in data:
+			i.due_date = data["due_date"]
+			i.borrower = users[data["borrower"]]
 		i.status = data["status"]
 
 		for u in data['history']:

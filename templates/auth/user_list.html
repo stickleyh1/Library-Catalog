@@ -1,0 +1,22 @@
+{% extends 'library/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <h1>User List</h1>
+
+    {% if user_list %}
+    <ul>
+
+      {% for user in user_list %}
+        {% if user.username != 'root' %}
+          <li>
+            <a href="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</a> ({{user.username}})
+          </li>
+        {% endif %}
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no users.</p>
+    {% endif %}       
+{% endblock %}

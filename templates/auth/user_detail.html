@@ -1,0 +1,42 @@
+{% extends 'library/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+  	<div class="row">
+	    <div class="col-sm-12">
+		    <h1>User: {{ user.username }}</h1>
+		    <br/>
+		    <hr>
+		    <h4>Inventory</h4>
+		    <div style="margin-left: 25px">
+		        {% for copy in instances %}
+		        	{% if copy.borrower.username == user.username %}
+			        	<p>
+			        		<strong>Title:</strong> {{copy.media.title}}
+			        	</p>
+		           	 	<p>
+		              		<strong>Due to be returned:</strong> {{ copy.due_date }}
+		            	</p>
+		            	{% if copy.late_fee != 0 %}
+							<p>
+			              		<strong>Late fee:</strong> ${{ copy.late_fee }}
+			            	</p>
+		            	{% endif %}
+			          	<p class="text-muted">
+			            	<strong>Id:</strong> {{copy.id}}
+			          	</p>
+			          	<h4>Rental History</h4>
+			          	<div style="margin-left: 25px">
+			              	{% for renter in copy.rental_history.all %}
+			                	<p>
+			                  		{{ renter }}
+			                	</p>
+			                {% endfor %}
+			          	</div>
+			          	<hr>
+		          	{% endif %}
+		        {% endfor %}
+		    </div>
+	    </div>
+    </div>
+{% endblock %}
