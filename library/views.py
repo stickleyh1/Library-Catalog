@@ -27,14 +27,9 @@ def search_results(request):
 	if request.GET.get('q'):
 		query = ''+request.GET.get('q')
 		if query != None:
-			print("Not None")
 			results = []
-			count = 0
 			objs = Media.objects.filter(Q(isbn=query) | Q(topic__name=query) | Q(title__icontains=query))
-			print(objs)
 			for m in objs:
-				print(count)
-				count += 1
 				results.append(m)
 			return render(request, 'library/search_results.html', {"results": results,})
 		
