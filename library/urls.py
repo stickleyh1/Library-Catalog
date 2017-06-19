@@ -10,4 +10,5 @@ urlpatterns = [
 	url(r'^user/$', views.UserListView.as_view(), name="user"),
 	url(r'^user/(?P<pk>\d+)/$', views.UserDetailView.as_view(), name="user-detail"),
 	url(r'^search/$', views.search, name="search"),
+	url(r'^search_results/$', views.search_results, name="search_results"),
 ]

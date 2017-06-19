@@ -16,12 +16,29 @@ def index(request):
 	return render(request, 'library/index.html', context_dict)
 
 def search(request):
-    query = request.GET.get('q')
-    results = set()
-    for m in Media.objects.filter(Q(isbn=query) | Q(topic=query) | Q(title__contains=query)):
-       	results.add(m)
-    context = RequestContext(request)
-    return render('search_results.html', {"results": results,}, context_instance=context)
+	if request.GET.get('q'):
+		query = ''+request.GET.get('q')
+		if query != None:
+			return render(request, 'library/search_results.html')
+		
+	return render(request, 'library/search.html')
+
+def search_results(request):
+	if request.GET.get('q'):
+		query = ''+request.GET.get('q')
+		if query != None:
+			print("Not None")
+			results = []
+			count = 0
+			objs = Media.objects.filter(Q(isbn=query) | Q(topic__name=query) | Q(title__icontains=query))
+			print(objs)
+			for m in objs:
+				print(count)
+				count += 1
+				results.append(m)
+			return render(request, 'library/search_results.html', {"results": results,})
+		
+	return render(request, 'library/search.html')
 
 class MediaListView(generic.ListView):
     model = Media
