@@ -20,7 +20,7 @@ def search(request):
 		query = ''+request.GET.get('q')
 		if query != None:
 			return render(request, 'library/search_results.html')
-		
+
 	return render(request, 'library/search.html')
 
 def search_results(request):
@@ -32,7 +32,7 @@ def search_results(request):
 			for m in objs:
 				results.append(m)
 			return render(request, 'library/search_results.html', {"results": results,})
-		
+
 	return render(request, 'library/search.html')
 
 class MediaListView(generic.ListView):
@@ -52,7 +52,7 @@ class UserDetailView(generic.DetailView):
 		context['instances'] = MediaInstance.objects.all()
 		context['medias'] = Media.objects.all()
 		for i in context['instances']:
-			if i.due_date < dt.date.today():
+			if i.due_date and i.due_date < dt.date.today():
 				i.late_fee = (dt.date.today() - i.due_date).days
 
 		return context
